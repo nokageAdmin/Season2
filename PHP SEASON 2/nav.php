@@ -6,15 +6,14 @@ include("../connections.php");
 ?>
 
 
-
 <center>
 
-    <a href="index" class="btn-primary" >Register</a>
+    <a href="index.php" class="btn-primary" >Register</a>
 
     &nbsp;
     &nbsp;
 
-    <a href="login" class="btn-primary" >Login</a>
+    <a href="login.php" class="btn-primary" >Login</a>
 
     &nbsp;
     &nbsp;

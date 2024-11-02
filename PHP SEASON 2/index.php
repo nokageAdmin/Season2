@@ -1,7 +1,11 @@
 <?php 
+include("nav.php");
 
+use PHPMailer\PHPMailer\PHPMailer;
 
-//include("nav.php");
+use PHPMailer\PHPMailer\Exception;
+
+require 'PHPMailer/vendor/autoload.php';
 
 $first_name = $middle_name = $last_name = $gender = $preffix = $seven_digit = $email = "";
 $first_nameErr = $middle_nameErr = $lastnameErr = $genderErr = $preffixErr = $seven_digitErr = $emailErr = "";
@@ -49,12 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST["email"];
     }
 
-    // if (empty($_POST["password"])) {
-    //     $passwordErr = "Required";
-    // } else {
-    //     $password = $_POST["password"];
-    // }
-
     if ($first_name && $middle_name && $last_name && $gender && $preffix && $seven_digit && $email) {
 
         if (!preg_match("/^[a-zA-Z ]*$/", $first_name)) {
@@ -70,16 +68,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if ($count_middle_name_string < 2) {
                     $middle_nameErr = "maiksi middle name mo boss";
                 } else {
-
                     $count_last_name_string = strlen($last_name);
 
-                if ($count_last_name_string < 2) {
-                    $lastnameErr = "maiksi middle name mo boss";
-
+                    if ($count_last_name_string < 2) {
+                        $lastnameErr = "maiksi last name mo boss";
                     } else {    
                         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                             $emailErr = "invalid email tol";
-
                         } else {
                             $count_seven_digit_string = strlen($seven_digit);
 
@@ -87,29 +82,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 $seven_digitErr = "kulang, 7 digits dapat";
                             } else {
                                 
-                                function random_password( $length = 5 ) {
+                                function random_password($length = 5) {
                                     $str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-                                    $shuffled = substr ( str_shuffle( $str ), 0, $length );
+                                    $shuffled = substr(str_shuffle($str), 0, $length);
                                     return $shuffled;
                                 }
 
                                 $password = random_password(8);
 
+                                require 'PHPMailer/PHPMailerAutoload.php'; // Ensure this path is correct
+
+                                $mail = new PHPMailer;
+
+                                // $mail->SMTPDebug = 3;
+
+                                $mail->IsSMTP();
+
+                                $mail->Host = 'smtp.gmail.com';
+
+                                $mail->SMTPAuth =true;
+
+                                $mail->Username = 'aquinodeej@gmail.com';
+
+                                $mail->Password = 'Kouseiarima9';
+
+                                $mail->SMTPSecure = 'tsl'; 
+
+                                $mail->Port = 587;
+
+                                $mail->setFrom('aquinodeej@gmail.com', 'PHP Lord'); // Corrected From
+
+                                $mail->addAddress($email);
+
+                                $mail->isHTML(true);
+
+                                $message = "Your password is: <font color='red'><b>$password</b></font>";
+
+                                $mail->Subject = 'Default Password';
+
+                                $mail->Body = $message;
+
+                                if(!$mail->send()) {
+                                    echo 'Message could not be sent.';
+                                    echo 'Mailer Error:' . $mail->ErrorInfo;
+                                } else {
+                                    include("connections.php");
+                                    mysqli_query($connections, "INSERT INTO tbl_user(first_name, middle_name, last_name, gender, preffix, seven_digit, email, password, account_type) VALUES ('$first_name','$middle_name','$last_name', '$gender','$preffix', '$seven_digit', '$email','$password', '2') ");
+
+                                    echo "<script>window.location.href='success.php';</script>";
+                                }
+
                                 echo "
-
-                                Your email is: <font color=red> <b> $email </b> </font>
-                                Your password is: <font color=red> <b> $password </b> </font>
-                                
+                                Your email is: <font color='black'> <b> $email </b> </font>
+                                Your password is: <font color='black'> <b> $password </b> </font>
                                 <hr>
-
                                 ";
-
-                                include("connections.php");
-                                mysqli_query($connections, "INSERT INTO tbl_user (first_name, middle_name, last_name, gender, preffix, seven_digit, email, password) VALUES ('$first_name', '$middle_name', '$last_name', '$gender', '$preffix', '$seven_digit', '$email', '$password')");
-
-
-
-                                echo "<script>window.location.href='success.php';</script>";
                             }
                         }
                     }
@@ -121,7 +148,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 ?>
 
-
 <style>
     .error {
         color: red;
@@ -129,19 +155,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </style>
 
 <script type="application/javascript">
-
 function isNumberKey(evt){
-
     var charCode = (evt.which) ? evt.which : event.keyCode
-    
-    if (charCode > 31 && (charCode < 48  || charCode > 57))
-
-    return false;t
-
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+        return false;
     return true;
-
 }
-
 </script>
 
 <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
@@ -191,7 +210,7 @@ function isNumberKey(evt){
                     </select>
                     <span class="error"><?php echo $preffixErr; ?></span>
 
-                    <input type="text" name="seven_digit" value="<?php echo $seven_digit; ?>" maxlength="7" placeholder="Other seven digit" onkeypress='return is isNumberKey(event)'>
+                    <input type="text" name="seven_digit" value="<?php echo $seven_digit; ?>" maxlength="7" placeholder="Other seven digit" onkeypress='return isNumberKey(event)'>
                     <span class="error"><?php echo $seven_digitErr; ?></span>
                 </td>
             </tr>

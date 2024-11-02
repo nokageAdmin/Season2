@@ -64,7 +64,7 @@ if (isset($_POST["btnLogin"])) {
 
             $db_password = $fetch["password"];
 
-            $db_attempt = (int)$fetch["attempt"]; // Ensure $db_attempt is treated as an integer
+            $db_attempt = isset($fetch["attempt"]) ? (int)$fetch["attempt"] : 0;
 
             $db_log_time = strtotime($fetch["log_time"]);
 

@@ -1,11 +1,11 @@
 <?php 
 include("nav.php");
 
-use PHPMailer\PHPMailer\PHPMailer;
+// use PHPMailer\PHPMailer\PHPMailer;
 
-use PHPMailer\PHPMailer\Exception;
+// use PHPMailer\PHPMailer\Exception;
 
-require 'PHPMailer/vendor/autoload.php';
+// require 'PHPMailer/vendor/autoload.php';
 
 $first_name = $middle_name = $last_name = $gender = $preffix = $seven_digit = $email = "";
 $first_nameErr = $middle_nameErr = $lastnameErr = $genderErr = $preffixErr = $seven_digitErr = $emailErr = "";

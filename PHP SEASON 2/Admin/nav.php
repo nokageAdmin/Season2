@@ -14,4 +14,9 @@
 &nbsp;
 
 <a href="Setting.php" class="btn-primary" >Setting</a>
+
+&nbsp;
+&nbsp;
+
+<a href="../logout.php" class="btn-delete" >Logout</a>
 </center>

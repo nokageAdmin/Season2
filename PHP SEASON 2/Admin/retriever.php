@@ -31,7 +31,7 @@
 include("../connections.php");
 
 
-$retrieve_query = mysqli_query($connections,"SELECT * FROM tbl_user ");
+$retrieve_query = mysqli_query($connections,"SELECT * FROM tbl_user WHERE account_type='2' ");
 
 while($row_users = mysqli_fetch_assoc($retrieve_query)){
 

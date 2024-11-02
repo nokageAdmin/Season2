@@ -10,7 +10,7 @@
 <a href="MyFavorites" class="btn-primary">My Favorites</a>
 &nbsp; &nbsp; 
 
-<a href="../logout" class="btn-delete">Logout</a>
+<a href="../logout.php" class="btn-delete">Logout</a>
 &nbsp; &nbsp; 
 
 </center>

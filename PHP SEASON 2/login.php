@@ -18,7 +18,7 @@ if(isset($_SESSION["email"])){
 
     if($account_type == 1){
         
-        echo "<script>window.location.href='Admin';</script>";
+        echo "<script>window.location.href='Admin';</script>";s
 
     }else{
 

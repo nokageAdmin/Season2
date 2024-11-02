@@ -10,7 +10,7 @@ if(isset($_SESSION["email"])){
     echo "<script>window.location.href='../';</script>";
 }
 
-include ("../connections.php");
+include ("connections.php");
 
 
 include ("nav.php");
